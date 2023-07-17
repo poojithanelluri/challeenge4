@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Challenge 4</title>
+</head>
+<body>
+    <h1>Challenge 4</h1>
+    <script>
+        function areObjectsSimilar(obj1, obj2) {
+  // Check if both objects are of the same type
+  if (typeof obj1 !== typeof obj2) {
+    return false;
+  }
+
+  if (Array.isArray(obj1)) {
+    // If both objects are arrays
+    if (obj1.length !== obj2.length) {
+      return false;
+    }
+
+    for (let i = 0; i < obj1.length; i++) {
+      if (!areObjectsSimilar(obj1[i], obj2[i])) {
+        return false;
+      }
+    }
+  } else if (obj1 instanceof Map) {
+    // If both objects are maps
+    if (obj1.size !== obj2.size) {
+      return false;
+    }
+
+    for (const [key, value] of obj1) {
+      if (!obj2.has(key) || !areObjectsSimilar(value, obj2.get(key))) {
+        return false;
+      }
+    }
+  } else if (typeof obj1 === 'object' && obj1 !== null) {
+    // If both objects are plain objects
+    const keys1 = Object.keys(obj1);
+    const keys2 = Object.keys(obj2);
+
+    if (keys1.length !== keys2.length) {
+      return false;
+    }
+
+    for (const key of keys1) {
+      if (!obj2.hasOwnProperty(key) || !areObjectsSimilar(obj1[key], obj2[key])) {
+        return false;
+      }
+    }
+  } else {
+    // For other types (e.g., numbers, strings, booleans)
+    if (obj1 !== obj2) {
+      return false;
+    }
+  }
+
+  return true;
+}
+const obj3 = {
+  name: 'John',
+  age: 30,
+  hobbies: ['reading', 'gaming'],
+};
+
+const obj4 = {
+  name: 'John',
+  age: 30,
+  hobbies: [ 'gaming','reading'],
+};
+console.log(obj3);
+console.log(obj4);
+console.log(areObjectsSimilar(obj3, obj4));  // false
+
+    </script>
+</body>
+</html>
